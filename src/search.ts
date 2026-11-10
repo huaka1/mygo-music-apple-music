@@ -3,18 +3,19 @@
 import { catalog, first } from "./api.ts";
 import { songsOf, toAlbum, toArtist, toPlaylist } from "./models.ts";
 import { album } from "./pages.ts";
+import { searchShows } from "./podcasts.ts";
 import { listed, prefetch, warm } from "./prefetch.ts";
 import type { Resource, SearchBody, SuggestionsBody } from "./types/apple.ts";
 import type { SearchKind, SearchResult, Track } from "./types/music.ts";
 
-const types: Record<SearchKind, string> = {
+const types: Record<Exclude<SearchKind, "shows">, string> = {
   tracks: "songs",
   albums: "albums",
   artists: "artists",
   playlists: "playlists",
 };
 
-const convert: Record<SearchKind, (items: Resource[]) => SearchResult[SearchKind]> = {
+const convert: Record<Exclude<SearchKind, "shows">, (items: Resource[]) => SearchResult[SearchKind]> = {
   tracks: songsOf,
   albums: (items) => items.map(toAlbum),
   artists: (items) => items.map(toArtist),
@@ -31,6 +32,8 @@ export async function search({
   offset?: number;
 }): Promise<SearchResult> {
   warm();
+  // 播客在另一个目录里
+  if (kind === "shows") return searchShows(term, offset);
   const type = types[kind];
   if (!type) return { [kind]: [], more: false };
   const link = parseAppleURL(term);

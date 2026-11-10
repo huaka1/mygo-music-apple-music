@@ -1,7 +1,7 @@
 {
   "id": "apple-music",
   "name": "Apple Music",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "minAppVersion": "0.1.21",
   "main": "index.js",
   "playback": "stream",
@@ -9,6 +9,7 @@
     "network": [
       "music.apple.com",
       "amp-api.music.apple.com",
+      "amp-api.podcasts.apple.com",
       "play.music.apple.com",
       "play.itunes.apple.com",
       "*.itunes.apple.com",
@@ -71,6 +72,10 @@
     },
     {
       "builtin": "stations"
+    },
+    {
+      "builtin": "shows",
+      "title": "Podcasts"
     }
   ],
   "requestHeaders": [

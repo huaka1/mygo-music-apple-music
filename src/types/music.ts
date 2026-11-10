@@ -24,6 +24,10 @@ export interface Track {
   duration: number;
   url?: string;
   unavailable?: boolean;
+  // 播客单集：属于哪个节目、简介和发布时间
+  showId?: string;
+  description?: string;
+  published?: string;
 }
 
 export interface Playlist {
@@ -45,6 +49,24 @@ export interface Station {
   imageUrl?: string;
 }
 
+// 播客节目，它的单集是 Track
+export interface Show {
+  id: string;
+  name: string;
+  imageUrl?: string;
+  description?: string;
+  publisher?: string;
+  episodeCount?: number;
+  subscribed?: boolean;
+}
+
+// 节目详情页：节目本身和一页单集
+export interface ShowPage {
+  show: Show;
+  episodes: Track[];
+  more: boolean;
+}
+
 export interface Section {
   title?: string;
   tracks?: Track[];
@@ -52,6 +74,7 @@ export interface Section {
   artists?: Artist[];
   playlists?: Playlist[];
   stations?: Station[];
+  shows?: Show[];
   morePage?: string;
   empty?: string;
 }
@@ -79,13 +102,14 @@ export interface Account {
   imageUrl?: string;
 }
 
-export type SearchKind = "tracks" | "albums" | "artists" | "playlists";
+export type SearchKind = "tracks" | "albums" | "artists" | "playlists" | "shows";
 
 export interface SearchResult {
   tracks?: Track[];
   albums?: Album[];
   artists?: Artist[];
   playlists?: Playlist[];
+  shows?: Show[];
   more: boolean;
 }
 

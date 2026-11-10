@@ -21,6 +21,7 @@ import * as lib from "./library.ts";
 import * as ly from "./lyrics.ts";
 import * as pg from "./pages.ts";
 import * as pb from "./playback.ts";
+import * as pc from "./podcasts.ts";
 import { heard, playing, wake } from "./prefetch.ts";
 import * as se from "./search.ts";
 import * as st from "./stations.ts";
@@ -93,6 +94,8 @@ export const album = asked(pg.album);
 export const artist = asked(pg.artist);
 export const playlist = asked(pg.playlist);
 export const stream = asked((p: { id: string; quality?: string }) => {
+  // 播客单集直接给音频地址，不走歌曲的解密流程
+  if (pc.isEpisodeID(p.id)) return pc.stream(p);
   // After the quality asked for is noted, which says how the songs coming up play.
   const s = pb.stream(p);
   playing(p.id);
@@ -103,3 +106,7 @@ export const search = asked(se.search);
 export const suggest = asked(se.suggest);
 export const stations = asked(() => st.stations());
 export const stationNext = asked(st.stationNext);
+// 播客：订阅列表、节目页、订阅开关
+export const shows = asked(() => pc.shows());
+export const show = asked(pc.show);
+export const subscribeShow = asked(pc.subscribeShow);

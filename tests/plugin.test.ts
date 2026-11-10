@@ -30,11 +30,14 @@ test("exports what the app calls, and nothing else", async () => {
     "savedAlbums",
     "search",
     "setSetting",
+    "show",
+    "shows",
     "signIn",
     "signOut",
     "stationNext",
     "stations",
     "stream",
+    "subscribeShow",
     "suggest",
   ]);
 });

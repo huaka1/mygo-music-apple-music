@@ -47,5 +47,10 @@
   "Set the Wrapper Address too, to sign in with an account the wrapper holds": "要用 wrapper 里的账户登录，还需要设置 Wrapper 地址",
   "Signing in with the wrapper needs amhelper, which the plugin for this platform lacks": "用 wrapper 登录需要 amhelper，但这个平台的插件没有附带它",
   "Check the Wrapper Account in the settings": "请检查设置里的 Wrapper 账户",
-  "Apple Music didn't accept the token of the wrapper's account. Log it in to the wrapper again.": "Apple Music 不接受 wrapper 里这个账户的令牌。请在 wrapper 里重新登录该账户。"
+  "Apple Music didn't accept the token of the wrapper's account. Log it in to the wrapper again.": "Apple Music 不接受 wrapper 里这个账户的令牌。请在 wrapper 里重新登录该账户。",
+  "Podcasts": "播客",
+  "Top Podcasts": "热门播客",
+  "Apple Podcasts doesn't have this": "Apple 播客没有这个节目",
+  "Video podcasts don't play here": "这里放不了视频播客",
+  "This episode has no audio": "这一集没有音频"
 }

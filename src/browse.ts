@@ -4,6 +4,7 @@ import { allPages, catalog, me, storefront } from "./api.ts";
 import { kept } from "./background.ts";
 import { LIST_KEPT, recentTracks } from "./library.ts";
 import { songsOf, toAlbum, toPlaylist, toStation } from "./models.ts";
+import { topShows } from "./podcasts.ts";
 import { listed, shown, warm } from "./prefetch.ts";
 import { signedIn } from "./session.ts";
 import type { Body, ChartsBody } from "./types/apple.ts";
@@ -17,10 +18,11 @@ async function charts(limit: number) {
 
 export async function home(): Promise<Browse> {
   warm();
-  const [chart, recommendations, recent] = await Promise.all([
+  const [chart, recommendations, recent, podcasts] = await Promise.all([
     charts(30).catch(() => ({ songs: undefined, albums: undefined, playlists: undefined })),
     signedIn() ? me("/recommendations", { limit: 12 }).catch((): Body | null => null) : null,
     signedIn() ? recentTracks().catch((): Track[] => []) : [],
+    topShows(12),
   ]);
   const sections: Section[] = [];
   if (chart.songs) {
@@ -56,13 +58,14 @@ export async function home(): Promise<Browse> {
       playlists: chart.playlists.data.map(toPlaylist),
     });
   }
+  if (podcasts.shows.length) sections.push({ title: podcasts.title, shows: podcasts.shows, morePage: "charts" });
   return { title: "Apple Music", sections };
 }
 
 export async function browse({ page }: { page: string }): Promise<Browse> {
   warm();
   if (page === "charts") {
-    const chart = await charts(100);
+    const [chart, podcasts] = await Promise.all([charts(100), topShows(100)]);
     const sections: Section[] = [];
     if (chart.songs) {
       const songs = songsOf(chart.songs.data);
@@ -77,6 +80,7 @@ export async function browse({ page }: { page: string }): Promise<Browse> {
         playlists: chart.playlists.data.map(toPlaylist),
       });
     }
+    if (podcasts.shows.length) sections.push({ title: podcasts.title, shows: podcasts.shows });
     return { title: t("Charts"), subtitle: (await storefront()).toUpperCase(), sections };
   }
   if (page === "recentlyAdded") return recentlyAdded();

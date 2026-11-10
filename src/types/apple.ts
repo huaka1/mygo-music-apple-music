@@ -44,6 +44,11 @@ export interface Attributes {
   avatarArtwork?: Artwork;
   /** With extend=extendedAssetUrls. */
   extendedAssetUrls?: { enhancedHls?: string };
+  // 播客单集的字段（amp-api.podcasts.apple.com）
+  durationInMilliseconds?: number;
+  assetUrl?: string;
+  releaseDateTime?: string;
+  mediaKind?: string;
 }
 
 export interface Relationship {
@@ -77,6 +82,11 @@ export interface SuggestionsBody {
 export interface Chart {
   name?: string;
   data: Resource[];
+}
+
+// 播客排行榜：results.podcasts 里每个榜单带 displayName
+export interface PodcastChartsBody {
+  results?: { podcasts?: { displayName?: string; data: Resource[] }[] };
 }
 
 export interface ChartsBody {
